@@ -1,14 +1,14 @@
 # Ticket Class - Composition with Event (1-to-1)
 class Ticket:
-    def __init__(self, ticket_id, ticket_type, price, validity, features, event_details):
+    def __init__(self, ticket_id, ticket_type, price, validity, features, event_id, name, date, venue, description):
         try:
             self._ticket_id = ticket_id
             self._ticket_type = ticket_type
             self._price = price
             self._validity = validity
             self._features = features
- # Create new Event INSIDE Ticket -> True Composition
-            self._event = Event(**event_details)        
+ ## True Composition: Event created and lives inside Ticket
+            self._event = Event(event_id, name, date, venue, description)       
         except Exception as e:
             print(f"Error initializing Ticket: {e}")
 

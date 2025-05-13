@@ -66,10 +66,10 @@ class Event:
 
 # SeasonMembership Class - Has list of races (races_included)
 class SeasonMembership:
-    def __init__(self, season_year, races_included, member_benefits, renewal_date):
+    def __init__(self, season_year, races_included=None, member_benefits=None, renewal_date=None):
         try:
             self._season_year = season_year
-            self._races_included = races_included      # LIST ASSOCIATION: list of race names or IDs
+            self._races_included = races_included if races_included is not None else [] # LIST ASSOCIATION: list of race names or IDs
             self._member_benefits = member_benefits
             self._renewal_date = renewal_date
         except Exception as e:
@@ -125,13 +125,13 @@ class User:
 
 # Admin Class - Inherits from User and Aggregates Events (0..* Event)
 class Admin(User):
-    def __init__(self, user_id, name, email, password, role, admin_id, permissions, department, managed_events):
+    def __init__(self, user_id, name, email, password, role, admin_id, permissions=None, department=None, managed_events=None):
         super().__init__(user_id, name, email, password, role)
         try:
             self._admin_id = admin_id
-            self._permissions = permissions            # LIST ASSOCIATION: list of permission strings
+            self._permissions = permissions if permissions is not None else []
             self._department = department
-            self._managed_events = managed_events      # AGGREGATION: list of Event objects managed by Admin
+            self._managed_events = managed_events if managed_events is not None else []  # AGGREGATION: list of Event objects managed by Admin
         except Exception as e:
             print(f"Error initializing Admin: {e}")
 
@@ -158,13 +158,13 @@ class Admin(User):
 
 # Customer Class - Inherits from User and is associated with PurchaseOrders
 class Customer(User):
-    def __init__(self, user_id, name, email, password, role, loyalty_points, phone_number, address, purchase_orders):
+    def __init__(self, user_id, name, email, password, role, loyalty_points, phone_number, address, purchase_orders=None):
         super().__init__(user_id, name, email, password, role)
         try:
             self._loyalty_points = loyalty_points
             self._phone_number = phone_number
             self._address = address
-            self._purchase_orders = purchase_orders    # LIST ASSOCIATION: list of PurchaseOrder objects
+            self._purchase_orders = purchase_orders if purchase_orders is not None else []
         except Exception as e:
             print(f"Error initializing Customer: {e}")
 
@@ -247,14 +247,14 @@ class SingleRacePass:
 
 # PurchaseOrder Class - Associated with multiple Tickets and one Payment
 class PurchaseOrder:
-    def __init__(self, order_id, customer_id, ticket_list, total_price, order_date, tickets, payment):
+    def __init__(self, order_id, customer_id, ticket_list, total_price, order_date, tickets=None, payment=None):
         try:
             self._order_id = order_id
             self._customer_id = customer_id
             self._ticket_list = ticket_list            # Raw ticket data list
             self._total_price = total_price
             self._order_date = order_date
-            self._tickets = tickets                    # ASSOCIATION: list of Ticket objects
+            self._tickets = tickets if tickets is not None else []  # Initialize empty list if not passed
             self._payment = payment                    # ASSOCIATION: one Payment object
         except Exception as e:
             print(f"Error initializing PurchaseOrder: {e}")
